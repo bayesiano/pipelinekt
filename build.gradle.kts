@@ -1,17 +1,18 @@
-import org.jetbrains.dokka.gradle.DokkaTask
+// TODO import org.jetbrains.dokka.gradle.DokkaTask
 import com.code42.version.Version
 
-val kotlinVersion = "1.3.61"
+//val kotlinVersion = "1.3.61"
+val kotlinVersion = "1.5.31"
 
 plugins {
     base
-    kotlin("jvm") version "1.3.61"
+//    kotlin("jvm") version "1.3.61"
+    kotlin("jvm") version "1.5.31"
     id("idea")
-    maven
     `maven-publish`
-    id("com.diffplug.gradle.spotless").version("3.26.1")
-    id("org.jetbrains.dokka").version("0.10.0")
-    id("io.gitlab.arturbosch.detekt").version("1.2.2")
+    // TODO id("com.diffplug.gradle.spotless").version("3.26.1")
+    // TODO id("org.jetbrains.dokka").version("0.10.0")
+    // TODO id("io.gitlab.arturbosch.detekt").version("1.2.2")
     jacoco
 }
 val githubRepo = System.getenv("GITHUB_REPOSITORY") ?: "code42/pipelinekt"
@@ -24,12 +25,11 @@ allprojects {
     version = Version.getVersion()
 
     repositories {
-        jcenter()
         mavenCentral()
     }
 
 }
-
+/* TODO
 val dokka by tasks.getting(DokkaTask::class) {
     outputFormat = "gfm"
     outputDirectory = "${project.rootDir}/docs/dokka"
@@ -45,7 +45,7 @@ val dokka by tasks.getting(DokkaTask::class) {
 
 
 }
-
+*/
 tasks {
     create("incrementVersion") {
         doLast {
@@ -53,12 +53,20 @@ tasks {
         }
     }
 }
-
+/* TODO
 tasks.build {
     finalizedBy("dokka")
 }
-
+*/
 subprojects {
+    repositories {
+        //if( java.net.InetAddress.)
+        maven {
+            url = uri("http://ibrhsvn.ibmutua.inet:8081/artifactory/repo")
+            isAllowInsecureProtocol = true
+        }
+    }
+
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
     if(!base.archivesBaseName.startsWith("pipelinekt-")) {
@@ -74,17 +82,17 @@ subprojects {
 
     if(publishedProjects.contains(project.name)) {
         apply(plugin = "org.gradle.maven-publish")
-        apply(plugin = "com.diffplug.gradle.spotless")
-        apply(plugin = "io.gitlab.arturbosch.detekt")
+        //apply(plugin = "com.diffplug.gradle.spotless")
+        //apply(plugin = "io.gitlab.arturbosch.detekt")
         apply(plugin = "org.gradle.jacoco")
-        apply(plugin = "org.jetbrains.dokka")
+        //apply(plugin = "org.jetbrains.dokka")
 
         val sourcesJar by tasks.creating(Jar::class) {
             classifier = "sources"
             from(sourceSets.main.get().allSource)
         }
 
-
+/* TODO
         val dokkaKdoc by tasks.creating(DokkaTask::class) {
             outputFormat = "html"
             outputDirectory = "$buildDir/kdoc"
@@ -117,11 +125,11 @@ subprojects {
                 html.destination = file("$buildDir/reports/coverage")
             }
         }
-
+*/
         tasks.build {
             finalizedBy("jacocoTestReport")
         }
-
+/* TODO
         spotless {
             kotlin {
                 ktlint()
@@ -140,9 +148,10 @@ subprojects {
         }
 
         tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
-            exclude(".*/resources/.*,.*/build/.*")
+           exclude(".*/resources/.*,.* /build/.*")
         }
-
+*/
+/* TODO
         publishing {
             publications {
                 create<MavenPublication>("maven") {
@@ -154,6 +163,7 @@ subprojects {
                     artifact(kdocJar)
                 }
             }
+
             repositories {
                 mavenLocal()
                 maven {
@@ -178,6 +188,8 @@ subprojects {
                 }
             }
         }
+
+ */
     }
 }
 
